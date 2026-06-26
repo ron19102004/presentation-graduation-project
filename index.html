@@ -97,6 +97,27 @@
             box-shadow: 0 4px 12px rgba(8, 145, 178, 0.04);
         }
 
+        /* Hide scrollbars for chrome, safari and opera (especially horizontal navigation) */
+        .scrollbar-none::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* Hide scrollbars for ie, edge and firefox */
+        .scrollbar-none {
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
+
+        @media (max-width: 767px) {
+            .tab-active {
+                background: rgba(8, 145, 178, 0.08) !important;
+                border-left: none !important;
+                border-bottom: 3px solid #0891b2 !important;
+                border-radius: 12px 12px 0 0 !important;
+                box-shadow: none !important;
+            }
+        }
+
         @media print {
             .no-print {
                 display: none !important;
@@ -126,32 +147,30 @@
 
     <!-- TOP HEADER (no-print) -->
     <header
-        class="no-print border-b border-slate-200 bg-white/90 backdrop-blur-md sticky top-0 z-50 px-6 py-4 flex items-center justify-between shadow-sm">
-        <div class="flex items-center gap-3">
+        class="no-print border-b border-slate-200 bg-white/95 backdrop-blur-md sticky top-0 z-50 px-4 md:px-6 py-3 md:py-4 flex items-center justify-between shadow-sm">
+        <div class="flex items-center gap-2.5">
             <div
-                class="bg-gradient-to-br from-cyan-500 to-blue-600 p-2 rounded-xl text-white flex items-center justify-center shadow-md shadow-cyan-500/10">
-                <i data-lucide="activity" class="h-6 w-6 stroke-[2.5]"></i>
+                class="bg-gradient-to-br from-cyan-500 to-blue-600 p-1.5 md:p-2 rounded-xl text-white flex items-center justify-center shadow-md shadow-cyan-500/10">
+                <i data-lucide="activity" class="h-5 w-5 md:h-6 md:w-6 stroke-[2.5]"></i>
             </div>
             <div>
-                <h1 class="font-heading font-black text-xl tracking-tight text-slate-900 flex items-center gap-2">
+                <h1 class="font-heading font-black text-base md:text-xl tracking-tight text-slate-900 flex items-center flex-wrap gap-1.5">
                     NovaDental <span
-                        class="text-cyan-600 text-[10px] font-bold tracking-widest uppercase bg-cyan-50 border border-cyan-100 px-2 py-0.5 rounded-full">Graduation
-                        Hub</span>
+                        class="text-cyan-600 text-[9px] md:text-[10px] font-bold tracking-widest uppercase bg-cyan-50 border border-cyan-100 px-2 py-0.5 rounded-full">Graduation Hub</span>
                 </h1>
-                <p class="text-[10px] text-slate-500 font-semibold tracking-wider uppercase">Cẩm nang bảo vệ đồ án tốt
-                    nghiệp</p>
+                <p class="text-[9px] md:text-[10px] text-slate-500 font-semibold tracking-wider uppercase">Cẩm nang bảo vệ đồ án tốt nghiệp</p>
             </div>
         </div>
 
-        <div class="flex items-center gap-3">
+        <div class="flex items-center gap-2.5">
             <span
-                class="hidden md:inline-flex items-center gap-2 text-xs text-slate-700 bg-slate-100 border border-slate-200 px-4 py-2 rounded-xl font-medium">
+                class="hidden lg:inline-flex items-center gap-2 text-xs text-slate-700 bg-slate-100 border border-slate-200 px-4 py-2 rounded-xl font-medium">
                 <span class="h-2.5 w-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
                 Ứng viên: Trần Ngọc Anh Dũng
             </span>
             <button onclick="window.print()"
-                class="bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 transition-all duration-300 px-4 py-2.5 rounded-xl text-sm font-bold text-white flex items-center gap-2 shadow-md shadow-cyan-500/10">
-                <i data-lucide="printer" class="h-4 w-4"></i>
+                class="bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 transition-all duration-300 px-3 py-2 md:px-4 md:py-2.5 rounded-xl text-xs md:text-sm font-bold text-white flex items-center gap-1.5 md:gap-2 shadow-md shadow-cyan-500/10">
+                <i data-lucide="printer" class="h-3.5 w-3.5 md:h-4 md:w-4"></i>
                 <span>In tài liệu</span>
             </button>
         </div>
@@ -162,49 +181,48 @@
 
         <!-- LEFT NAVIGATION BAR (no-print) -->
         <aside
-            class="no-print w-full md:w-80 bg-white border-r border-slate-200 p-6 flex flex-col justify-between shrink-0">
-            <div class="space-y-6">
+            class="no-print w-full md:w-80 bg-white border-b md:border-r border-slate-200 p-4 md:p-6 flex flex-col justify-between shrink-0 sticky top-[61px] md:top-[77px] z-40">
+            <div class="space-y-4 md:space-y-6">
                 <div>
-                    <h3 class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-4">Danh mục cẩm nang
-                    </h3>
-                    <nav class="space-y-1.5" id="nav-tabs">
+                    <h3 class="hidden md:block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-4">Danh mục cẩm nang</h3>
+                    <nav class="flex flex-row md:flex-col overflow-x-auto md:overflow-x-visible whitespace-nowrap md:whitespace-normal gap-2 md:gap-1.5 pb-2 md:pb-0 scrollbar-none" id="nav-tabs">
                         <button onclick="switchTab('tab-introduction')" id="btn-tab-introduction"
-                            class="tab-btn tab-active w-full text-left px-4 py-3.5 rounded-xl text-sm font-bold flex items-center gap-3 transition duration-150 text-slate-900">
+                            class="tab-btn tab-active w-auto md:w-full shrink-0 text-left px-4 py-2.5 md:py-3.5 rounded-xl text-xs md:text-sm font-bold flex items-center gap-2.5 md:gap-3 transition duration-150 text-slate-900">
                             <i data-lucide="compass" class="h-4 w-4"></i>
                             <span>Tổng quan đề tài</span>
                         </button>
                         <button onclick="switchTab('tab-script')" id="btn-tab-script"
-                            class="tab-btn w-full text-left px-4 py-3.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 flex items-center gap-3 transition duration-150">
+                            class="tab-btn w-auto md:w-full shrink-0 text-left px-4 py-2.5 md:py-3.5 rounded-xl text-xs md:text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 flex items-center gap-2.5 md:gap-3 transition duration-150">
                             <i data-lucide="presentation" class="h-4 w-4"></i>
                             <span>Kịch bản thuyết trình</span>
                         </button>
                         <button onclick="switchTab('tab-architecture')" id="btn-tab-architecture"
-                            class="tab-btn w-full text-left px-4 py-3.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 flex items-center gap-3 transition duration-150">
+                            class="tab-btn w-auto md:w-full shrink-0 text-left px-4 py-2.5 md:py-3.5 rounded-xl text-xs md:text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 flex items-center gap-2.5 md:gap-3 transition duration-150">
                             <i data-lucide="database" class="h-4 w-4"></i>
                             <span>Kiến trúc & Database</span>
                         </button>
                         <button onclick="switchTab('tab-flows')" id="btn-tab-flows"
-                            class="tab-btn w-full text-left px-4 py-3.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 flex items-center gap-3 transition duration-150">
+                            class="tab-btn w-auto md:w-full shrink-0 text-left px-4 py-2.5 md:py-3.5 rounded-xl text-xs md:text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 flex items-center gap-2.5 md:gap-3 transition duration-150">
                             <i data-lucide="git-branch" class="h-4 w-4"></i>
                             <span>Cấu trúc & Luồng chạy</span>
                         </button>
                         <button onclick="switchTab('tab-demo')" id="btn-tab-demo"
-                            class="tab-btn w-full text-left px-4 py-3.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 flex items-center gap-3 transition duration-150">
+                            class="tab-btn w-auto md:w-full shrink-0 text-left px-4 py-2.5 md:py-3.5 rounded-xl text-xs md:text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 flex items-center gap-2.5 md:gap-3 transition duration-150">
                             <i data-lucide="play-circle" class="h-4 w-4"></i>
                             <span>Kịch bản Demo thực tế</span>
                         </button>
                         <button onclick="switchTab('tab-highlights')" id="btn-tab-highlights"
-                            class="tab-btn w-full text-left px-4 py-3.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 flex items-center gap-3 transition duration-150">
+                            class="tab-btn w-auto md:w-full shrink-0 text-left px-4 py-2.5 md:py-3.5 rounded-xl text-xs md:text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 flex items-center gap-2.5 md:gap-3 transition duration-150">
                             <i data-lucide="zap" class="h-4 w-4"></i>
                             <span>Điểm sáng kỹ thuật</span>
                         </button>
                         <button onclick="switchTab('tab-qa')" id="btn-tab-qa"
-                            class="tab-btn w-full text-left px-4 py-3.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 flex items-center gap-3 transition duration-150">
+                            class="tab-btn w-auto md:w-full shrink-0 text-left px-4 py-2.5 md:py-3.5 rounded-xl text-xs md:text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 flex items-center gap-2.5 md:gap-3 transition duration-150">
                             <i data-lucide="help-circle" class="h-4 w-4"></i>
                             <span>Bộ câu hỏi phản biện</span>
                         </button>
                         <button onclick="switchTab('tab-tips')" id="btn-tab-tips"
-                            class="tab-btn w-full text-left px-4 py-3.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 flex items-center gap-3 transition duration-150">
+                            class="tab-btn w-auto md:w-full shrink-0 text-left px-4 py-2.5 md:py-3.5 rounded-xl text-xs md:text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 flex items-center gap-2.5 md:gap-3 transition duration-150">
                             <i data-lucide="shield-check" class="h-4 w-4"></i>
                             <span>Lưu ý phòng thi</span>
                         </button>
@@ -212,9 +230,8 @@
                 </div>
 
                 <!-- System Tech Badges -->
-                <div class="border-t border-slate-200 pt-6">
-                    <h3 class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-4">Hệ sinh thái công
-                        nghệ</h3>
+                <div class="hidden md:block border-t border-slate-200 pt-6">
+                    <h3 class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-4">Hệ sinh thái công nghệ</h3>
                     <div class="grid grid-cols-2 gap-2">
                         <span
                             class="text-[10px] font-bold bg-slate-50 text-emerald-700 border border-slate-200/60 px-3 py-2 rounded-xl flex items-center gap-1.5 shadow-sm">
@@ -244,7 +261,7 @@
                 </div>
             </div>
 
-            <div class="mt-8 border-t border-slate-200 pt-6 text-center md:text-left">
+            <div class="hidden md:block mt-8 border-t border-slate-200 pt-6 text-center md:text-left">
                 <p class="text-xs text-slate-400 font-semibold uppercase tracking-wider">Đồ án tốt nghiệp</p>
                 <p class="text-xs font-black text-slate-800 mt-1">Chuyên ngành CNTT</p>
                 <p class="text-[10px] text-slate-500 mt-2">&copy; 2026 Trần Ngọc Anh Dũng</p>
@@ -2997,6 +3014,183 @@
                     </div>
 
                 </div>
+
+                <!-- CHIẾN LƯỢC THUYẾT TRÌNH 10 PHÚT (SLIDE + DEMO) -->
+                <div class="border-t border-slate-200 pt-8 space-y-6">
+                    <div>
+                        <h3 class="text-xl font-heading font-extrabold text-slate-900 flex items-center gap-2.5">
+                            <i data-lucide="clock" class="text-cyan-600 h-5.5 w-5.5 animate-pulse"></i>
+                            Chiến lược Bảo vệ 10 Phút "Bất Bại" (Slide + Live Demo)
+                        </h3>
+                        <p class="text-slate-500 text-xs mt-1">Phân bổ thời gian vàng và kịch bản thuyết trình tối ưu từng giây cho Trần Ngọc Anh Dũng</p>
+                    </div>
+
+                    <!-- Time Allocation Grid -->
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        <!-- Cột 1: Phân bổ thời gian -->
+                        <div class="bg-gradient-to-br from-slate-900 to-cyan-950 border border-slate-800 rounded-3xl p-6 text-white space-y-4 shadow-xl">
+                            <h4 class="font-heading font-bold text-base text-cyan-400 flex items-center gap-2">
+                                <i data-lucide="hourglass" class="h-4.5 w-4.5"></i>
+                                Phân bổ thời gian (10 Phút)
+                            </h4>
+                            <div class="space-y-3.5 text-xs">
+                                <div class="flex justify-between items-center border-b border-slate-850 pb-2">
+                                    <span class="text-slate-300">1. Thuyết trình Slide</span>
+                                    <span class="font-mono font-bold text-cyan-300">3.5 Phút (35%)</span>
+                                </div>
+                                <div class="flex justify-between items-center border-b border-slate-850 pb-2">
+                                    <span class="text-slate-300">2. Live Demo liên hoàn</span>
+                                    <span class="font-mono font-bold text-emerald-400">5.5 Phút (55%)</span>
+                                </div>
+                                <div class="flex justify-between items-center pb-1">
+                                    <span class="text-slate-300">3. Tổng kết & Chào kết</span>
+                                    <span class="font-mono font-bold text-amber-400">1.0 Phút (10%)</span>
+                                </div>
+                            </div>
+                            <div class="bg-cyan-950/40 border border-cyan-800/40 p-3.5 rounded-2xl text-[11px] text-cyan-200/90 leading-relaxed">
+                                <strong>💡 Quy tắc sống còn:</strong> Demo là phần ăn điểm nhất và chứng minh tính trung thực của đồ án. Tuyệt đối không sa đà vào slide quá 4 phút!
+                            </div>
+                        </div>
+
+                        <!-- Cột 2: Cách trình bày vấn đề -->
+                        <div class="bg-white border border-slate-200 rounded-3xl p-6 space-y-4 lg:col-span-2 shadow-premium">
+                            <h4 class="font-heading font-bold text-base text-slate-900 flex items-center gap-2">
+                                <i data-lucide="target" class="h-4.5 w-4.5 text-cyan-600"></i>
+                                Phương pháp "Trình bày vấn đề" hạ gục Hội đồng
+                            </h4>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-xs leading-relaxed">
+                                <div class="space-y-2.5">
+                                    <h5 class="font-bold text-rose-600 flex items-center gap-1.5">
+                                        <i data-lucide="x-circle" class="h-4 w-4"></i> Cách trình bày sai (Điểm thấp):
+                                    </h5>
+                                    <p class="text-slate-500">
+                                        Chỉ liệt kê công nghệ thô khan (ví dụ: "Em dùng Spring Boot làm API, Next.js làm Web, Expo làm App..."). Đi sâu vào lý thuyết hàn lâm dài dòng khiến Hội đồng buồn ngủ và dễ bị hỏi xoáy vào lý thuyết.
+                                    </p>
+                                </div>
+                                <div class="space-y-2.5">
+                                    <h5 class="font-bold text-emerald-600 flex items-center gap-1.5">
+                                        <i data-lucide="check-circle" class="h-4 w-4"></i> Cách trình bày đúng (Điểm 9-10):
+                                    </h5>
+                                    <p class="text-slate-600">
+                                        Nêu bật <strong>Nỗi đau thực tế (Pain Points)</strong> của phòng khám nha khoa, sau đó giới thiệu cách <strong>NovaDental giải quyết trọn gói</strong> qua luồng nghiệp vụ khép kín, và cuối cùng nhấn mạnh các <strong>Yếu tố tối ưu hiệu năng và Đổi mới sáng tạo (Redis Cache, Lock, TanStack Query Polling, AI X-Ray)</strong>.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Kịch bản 10 phút chi tiết -->
+                    <div class="bg-white border border-slate-200 rounded-3xl p-6 space-y-5 shadow-premium">
+                        <h4 class="font-heading font-bold text-base text-slate-900 flex items-center gap-2">
+                            <i data-lucide="file-text" class="h-4.5 w-4.5 text-cyan-600"></i>
+                            Kịch bản nói & Vận hành Demo liên hoàn (Từng giây)
+                        </h4>
+
+                        <!-- Stepper Kịch bản -->
+                        <div class="space-y-6 text-xs leading-relaxed">
+                            <!-- Step 1 -->
+                            <div class="border-l-2 border-cyan-500 pl-4 space-y-2">
+                                <div class="flex items-center gap-2">
+                                    <span class="bg-cyan-50 text-cyan-700 font-bold px-2 py-0.5 rounded">Phút 00:00 - Phút 01:00</span>
+                                    <strong class="text-slate-900">Mở đầu & Đặt vấn đề (Slide 1-2)</strong>
+                                </div>
+                                <p class="text-slate-600 italic bg-slate-50 p-3 rounded-xl border border-slate-100">
+                                    "Kính thưa quý thầy cô trong Hội đồng, em tên là Trần Ngọc Anh Dũng. Hôm nay em xin bảo vệ đồ án tốt nghiệp với đề tài 'Hệ thống Quản lý và Chăm sóc Nha khoa NovaDental'. Thưa thầy cô, ngành nha khoa hiện nay có 3 nỗi đau lớn: tỷ lệ bùng lịch cao gây lãng phí ghế khám, bệnh nhân chờ đợi lâu tại phòng chờ và hồ sơ bệnh án y khoa bị phân tán. NovaDental ra đời như một hệ sinh thái Omni-channel khép kín nhằm chuyển đổi số toàn diện quy trình này."
+                                </p>
+                            </div>
+
+                            <!-- Step 2 -->
+                            <div class="border-l-2 border-cyan-500 pl-4 space-y-2">
+                                <div class="flex items-center gap-2">
+                                    <span class="bg-cyan-50 text-cyan-700 font-bold px-2 py-0.5 rounded">Phút 01:00 - Phút 02:30</span>
+                                    <strong class="text-slate-900">Kiến trúc & Điểm sáng công nghệ (Slide 3-4)</strong>
+                                </div>
+                                <p class="text-slate-600 italic bg-slate-50 p-3 rounded-xl border border-slate-100">
+                                    "Để giải quyết triệt để, hệ thống được xây dựng với kiến trúc 3 nền tảng: Backend Spring Boot trung tâm, Web quản trị NextJS và Mobile App Expo cho bệnh nhân. Em đã áp dụng các kỹ thuật tối ưu hóa hiệu năng cao bao gồm: Redis Cache tăng tốc phân quyền RBAC động, cơ chế khóa phân tán Redis phòng ngừa double booking, và đặc biệt là hệ thống đồng bộ phòng chờ tự động bằng TanStack Query Polling ngầm giúp hệ thống cực kỳ ổn định, không gây nghẽn kết nối."
+                                </p>
+                            </div>
+
+                            <!-- Step 3 -->
+                            <div class="border-l-2 border-cyan-500 pl-4 space-y-2">
+                                <div class="flex items-center gap-2">
+                                    <span class="bg-cyan-50 text-cyan-700 font-bold px-2 py-0.5 rounded">Phút 02:30 - Phút 03:30</span>
+                                    <strong class="text-slate-900">Giới thiệu luồng nghiệp vụ & Chuyển sang Demo (Slide 5-6)</strong>
+                                </div>
+                                <p class="text-slate-600 italic bg-slate-50 p-3 rounded-xl border border-slate-100">
+                                    "Vòng đời y khoa của hệ thống được khép kín từ khâu Đặt lịch -> Check-in Phòng chờ -> Khám lâm sàng lập phác đồ -> và Thanh toán hóa đơn. Sau đây, để thầy cô thấy rõ tính thực tiễn và sự mượt mà của hệ thống, em xin phép được bắt đầu phần trình diễn Demo thực tế quy trình liên hoàn này."
+                                </p>
+                            </div>
+
+                            <!-- Step 4 (Demo 1) -->
+                            <div class="border-l-2 border-emerald-500 pl-4 space-y-2">
+                                <div class="flex items-center gap-2">
+                                    <span class="bg-emerald-55/50 text-emerald-800 font-bold px-2 py-0.5 rounded">Phút 03:30 - Phút 05:00</span>
+                                    <strong class="text-slate-900">Demo Bước 1: Bệnh nhân đặt lịch trên Mobile App (Expo)</strong>
+                                </div>
+                                <div class="text-slate-600 space-y-1.5">
+                                    <p><strong>Thao tác thực hiện:</strong> Mở ứng dụng di động Expo dành cho bệnh nhân. Đăng nhập và thực hiện thao tác đặt lịch hẹn mới: Chọn bác sĩ, chọn ngày, chọn khung giờ trống.</p>
+                                    <p class="italic bg-emerald-50/30 p-3 rounded-xl border border-emerald-100 text-slate-700">
+                                        "Đầu tiên, bệnh nhân mở ứng dụng di động cá nhân, dễ dàng kiểm tra các khung giờ trống của bác sĩ mong muốn. Khi bệnh nhân ấn đặt lịch, Backend Spring Boot lập tức kiểm tra tính khả dụng của slot khám, áp dụng cơ chế khóa phân tán Redis để ngăn chặn tuyệt đối tình trạng đặt lịch trùng lặp. Lịch hẹn sau đó được lưu ở trạng thái PENDING."
+                                    </p>
+                                </div>
+                            </div>
+
+                            <!-- Step 5 (Demo 2) -->
+                            <div class="border-l-2 border-emerald-500 pl-4 space-y-2">
+                                <div class="flex items-center gap-2">
+                                    <span class="bg-emerald-55/50 text-emerald-800 font-bold px-2 py-0.5 rounded">Phút 05:00 - Phút 06:00</span>
+                                    <strong class="text-slate-900">Demo Bước 2: Lễ tân duyệt lịch & Check-in Bệnh nhân (Web NextJS)</strong>
+                                </div>
+                                <div class="text-slate-600 space-y-1.5">
+                                    <p><strong>Thao tác thực hiện:</strong> Chuyển sang Web NextJS của Lễ tân. Ấn duyệt lịch hẹn (PENDING -> CONFIRMED). Khi bệnh nhân đến phòng khám, ấn nút 'Check-in' để đưa bệnh nhân vào danh sách Phòng chờ.</p>
+                                    <p class="italic bg-emerald-50/30 p-3 rounded-xl border border-emerald-100 text-slate-700">
+                                        "Tại quầy tiếp đón, lễ tân mở giao diện quản trị NextJS, kiểm tra thông tin và duyệt lịch hẹn. Vào ngày hẹn, khi bệnh nhân đến khám, lễ tân thực hiện Check-in. Ngay lập tức, hệ thống tự động tạo lượt khám mới và xếp bệnh nhân vào danh sách phòng chờ. Màn hình tivi ở sảnh chờ và màn hình điện thoại của bệnh nhân sẽ tự động đồng bộ danh sách này."
+                                    </p>
+                                </div>
+                            </div>
+
+                            <!-- Step 6 (Demo 3) -->
+                            <div class="border-l-2 border-emerald-500 pl-4 space-y-2">
+                                <div class="flex items-center gap-2">
+                                    <span class="bg-emerald-55/50 text-emerald-800 font-bold px-2 py-0.5 rounded">Phút 06:00 - Phút 07:30</span>
+                                    <strong class="text-slate-900">Demo Bước 3: Bác sĩ điều trị & Phân tích phim X-Ray bằng AI (Web NextJS)</strong>
+                                </div>
+                                <div class="text-slate-600 space-y-1.5">
+                                    <p><strong>Thao tác thực hiện:</strong> Đăng nhập tài khoản Bác sĩ. Mở màn hình khám điều trị. Nhấn gọi bệnh nhân vào phòng (chuyển sang IN_PROGRESS). Thực hiện tải lên một phim X-quang răng, ấn phân tích bằng AI. Lập Kế hoạch điều trị (<code>treatment_plan</code>) và hoàn tất ca khám.</p>
+                                    <p class="italic bg-emerald-50/30 p-3 rounded-xl border border-emerald-100 text-slate-700">
+                                        "Bác sĩ tại phòng điều trị lâm sàng mở màn hình làm việc. Danh sách phòng chờ được đồng bộ ngầm tự động thông qua cơ chế Polling của TanStack Query mà không cần F5. Bác sĩ gọi bệnh nhân vào phòng khám. Tại đây, bác sĩ tải phim X-quang răng của người bệnh lên. Hệ thống gửi API không đồng bộ sang server AI Python để phân tích và khoanh vùng răng sâu trực quan như thầy cô đang thấy. Bác sĩ lập phác đồ điều trị chi tiết và ấn hoàn thành ca khám."
+                                    </p>
+                                </div>
+                            </div>
+
+                            <!-- Step 7 (Demo 4) -->
+                            <div class="border-l-2 border-emerald-500 pl-4 space-y-2">
+                                <div class="flex items-center gap-2">
+                                    <span class="bg-emerald-55/50 text-emerald-800 font-bold px-2 py-0.5 rounded">Phút 07:30 - Phút 09:00</span>
+                                    <strong class="text-slate-900">Demo Bước 4: Thanh toán & Xuất hóa đơn (Web NextJS)</strong>
+                                </div>
+                                <div class="text-slate-600 space-y-1.5">
+                                    <p><strong>Thao tác thực hiện:</strong> Đăng nhập tài khoản Thu ngân. Mở danh sách hóa đơn chờ thanh toán. Xuất hóa đơn có mã QR động. Thực hiện thanh toán và cập nhật trạng thái lịch hẹn thành COMPLETED.</p>
+                                    <p class="italic bg-emerald-50/30 p-3 rounded-xl border border-emerald-100 text-slate-700">
+                                        "Cuối cùng, bộ phận thu ngân tiếp nhận thông tin điều trị tự động, xuất hóa đơn kèm mã QR động. Khi bệnh nhân quét mã thanh toán thành công, hệ thống nhận tín hiệu qua Webhook, tự động ghi nhận giao dịch và cập nhật trạng thái lịch khám thành COMPLETED, khép kín hoàn toàn quy trình vận hành và kiểm soát dòng tiền y tế."
+                                    </p>
+                                </div>
+                            </div>
+
+                            <!-- Step 8 -->
+                            <div class="border-l-2 border-cyan-500 pl-4 space-y-2">
+                                <div class="flex items-center gap-2">
+                                    <span class="bg-cyan-50 text-cyan-700 font-bold px-2 py-0.5 rounded">Phút 09:00 - Phút 10:00</span>
+                                    <strong class="text-slate-900">Tổng kết & Chào kết thúc</strong>
+                                </div>
+                                <p class="text-slate-600 italic bg-slate-50 p-3 rounded-xl border border-slate-100">
+                                    "Dạ thưa thầy cô, qua phần Demo vừa rồi, em đã chứng minh được tính khả thi, sự đồng bộ khép kín và mượt mà của hệ thống NovaDental trên cả 3 nền tảng. Dự án giải quyết trọn vẹn bài toán vận hành nha khoa số hóa, có tính bảo mật cao và tích hợp công nghệ đổi mới sáng tạo như AI X-Ray. Em xin chân thành cảm ơn các thầy cô đã lắng nghe và em rất mong nhận được những câu hỏi đóng góp từ Hội đồng ạ!"
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </section>
 
         </main>
