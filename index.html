@@ -590,9 +590,8 @@
                                     <h4 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2.5">Nội
                                         dung hiển thị trên Slide</h4>
                                     <ul class="text-slate-600 text-xs space-y-2 list-disc list-inside leading-relaxed">
-                                        <li>Luồng nghiệp vụ thông suốt từ check-in phòng chờ đến điều trị và thanh toán.
-                                        </li>
-                                        <li>Sử dụng WebSocket Broker để truyền tin cập nhật tức thì.</li>
+                                        <li>Luồng nghiệp vụ thông suốt từ check-in phòng chờ đến điều trị và thanh toán.</li>
+                                        <li>Sử dụng TanStack Query Polling ngầm để tự động cập nhật danh sách.</li>
                                         <li>Bệnh nhân cập nhật STT chờ khám tự động trên Web sảnh và App.</li>
                                     </ul>
                                 </div>
@@ -604,9 +603,10 @@
                                     <p class="text-cyan-950 text-xs leading-relaxed italic">
                                         "Chúng em thiết kế một luồng nghiệp vụ y khoa chặt chẽ và thông minh. Bệnh nhân
                                         sau khi được lễ tân Check-in sẽ tự động được đưa vào danh sách Phòng chờ kỹ
-                                        thuật số. Nhờ kết nối Socket thời gian thực, danh sách phòng chờ trên bảng hiển
-                                        thị tại sảnh cũng như trên điện thoại bệnh nhân sẽ nhảy số tự động mỗi khi bác
-                                        sĩ thay đổi trạng thái ca khám, mang lại sự chuyên nghiệp và minh bạch tối đa."
+                                        thuật số. Nhờ cơ chế tự động gửi truy vấn ngầm (Polling) của TanStack Query với chu kỳ
+                                        định sẵn, danh sách phòng chờ trên bảng hiển thị tại sảnh cũng như trên điện thoại bệnh
+                                        nhân sẽ tự động cập nhật số thứ tự mượt mà mỗi khi bác sĩ thay đổi trạng thái ca khám,
+                                        mang lại sự chuyên nghiệp và minh bạch tối đa mà không gây nghẽn kết nối."
                                     </p>
                                 </div>
                             </div>
@@ -1061,12 +1061,11 @@
                             <div class="ml-12">├── ⚙️ SecurityConfig.java <span class="text-slate-400 font-sans">(Cấu
                                     hình phân quyền Spring Security, CORS, Stateless)</span></div>
                             <div class="ml-12">├── ⚙️ WebSocketConfig.java <span class="text-slate-400 font-sans">(Cấu
-                                    hình Message Broker STOMP phục vụ phòng chờ & chat)</span></div>
+                                    hình Message Broker STOMP phục vụ Chat AI tích hợp)</span></div>
                             <div class="ml-12">├── ⚙️ JwtConfig.java <span class="text-slate-400 font-sans">(Cấu hình
                                     tham số mã hóa token JWT)</span></div>
                             <div class="ml-12">├── ⚙️ JwtChannelInterceptor.java <span
-                                    class="text-slate-400 font-sans">(Chặn kết nối Socket để xác thực JWT trên kênh thời
-                                    gian thực)</span></div>
+                                    class="text-slate-400 font-sans">(Chặn kết nối Socket để xác thực JWT trên kênh Chat AI)</span></div>
                             <div class="ml-12">└── ⚙️ SwaggerConfig.java <span class="text-slate-400 font-sans">(Sinh
                                     tài liệu API tự động phục vụ tích hợp)</span></div>
 
@@ -1648,17 +1647,13 @@
                             <div class="flex flex-wrap items-center justify-between gap-3">
                                 <span
                                     class="text-xs font-bold text-amber-800 bg-amber-50 border border-amber-200/60 px-3.5 py-1.5 rounded-full uppercase flex items-center gap-1.5">
-                                    <span class="h-2 w-2 rounded-full bg-amber-500"></span> Luồng 4: Đồng bộ trạng thái
-                                    Phòng chờ thời gian thực qua WebSockets STOMP Broker
+                                    <span class="h-2 w-2 rounded-full bg-amber-500"></span> Luồng 4: Tự động đồng bộ trạng thái Phòng chờ bằng TanStack Query Polling
                                 </span>
                                 <span
-                                    class="text-[10px] font-mono font-bold bg-slate-100 text-slate-600 px-3 py-1 rounded-md border border-slate-200">Spring
-                                    Event + SimpMessagingTemplate</span>
+                                    class="text-[10px] font-mono font-bold bg-slate-100 text-slate-600 px-3 py-1 rounded-md border border-slate-200">TanStack Query + Short Polling</span>
                             </div>
                             <p class="text-slate-600 text-xs leading-relaxed">
-                                Đồng bộ hóa tức thời số thứ tự, trạng thái phòng khám lâm sàng từ máy chủ đến các màn
-                                hình TV sảnh tiếp tiếp đón và ứng dụng di động bệnh nhân, loại bỏ hiện tượng tải lại
-                                trang thủ công (F5).
+                                Tự động cập nhật số thứ tự, trạng thái phòng khám lâm sàng từ máy chủ đến các màn hình TV sảnh tiếp đón và ứng dụng di động bệnh nhân ngầm theo chu kỳ định sẵn.
                             </p>
 
                             <!-- Stepper -->
@@ -1667,49 +1662,40 @@
                                     <div class="text-xs font-bold text-slate-900 flex items-center gap-1.5">
                                         <span
                                             class="h-5 w-5 rounded-full bg-amber-600 text-white text-[10px] flex items-center justify-center font-mono">1</span>
-                                        Kích hoạt Sự kiện
+                                        Cập nhật Trạng thái
                                     </div>
-                                    <p class="text-[11px] text-slate-500 font-medium">Lễ tân check-in bệnh nhân hoặc Bác
-                                        sĩ bấm hoàn thành khám. Lớp <code>WaitingRoomService</code> cập nhật MySQL thành
-                                        công.</p>
+                                    <p class="text-[11px] text-slate-500 font-medium">Lễ tân thực hiện check-in bệnh nhân hoặc Bác sĩ bấm hoàn thành ca điều trị. Lớp <code>WaitingRoomService</code> cập nhật MySQL thành công.</p>
                                 </div>
                                 <div class="bg-slate-50 border border-slate-200/40 p-3 rounded-2xl space-y-1.5">
                                     <div class="text-xs font-bold text-slate-900 flex items-center gap-1.5">
                                         <span
                                             class="h-5 w-5 rounded-full bg-amber-600 text-white text-[10px] flex items-center justify-center font-mono">2</span>
-                                        Phát tán Spring Event
+                                        Kích hoạt Polling ngầm
                                     </div>
-                                    <p class="text-[11px] text-slate-500 font-medium">Hệ thống kích hoạt sự kiện nội bộ
-                                        <code>SendNotificationEvent</code> chứa dữ liệu phòng chờ mới nhất để giữ mã
-                                        nguồn lỏng lẻo (Decoupled).</p>
+                                    <p class="text-[11px] text-slate-500 font-medium">Client Next.js (Web sảnh) và Expo Mobile sử dụng hook <code>useQuery</code> của TanStack Query với cấu hình <code>refetchInterval: 5000</code> để định kỳ kéo dữ liệu mới.</p>
                                 </div>
                                 <div class="bg-slate-50 border border-slate-200/40 p-3 rounded-2xl space-y-1.5">
                                     <div class="text-xs font-bold text-slate-900 flex items-center gap-1.5">
                                         <span
                                             class="h-5 w-5 rounded-full bg-amber-600 text-white text-[10px] flex items-center justify-center font-mono">3</span>
-                                        Truyền tải WebSocket
+                                        Truy vấn & Phản hồi
                                     </div>
-                                    <p class="text-[11px] text-slate-500 font-medium">Lớp lắng nghe sự kiện sử dụng
-                                        <code>SimpMessagingTemplate</code> của Spring đẩy dữ liệu JSON phòng chờ tới địa
-                                        chỉ kênh <code>/topic/waiting-room</code>.</p>
+                                    <p class="text-[11px] text-slate-500 font-medium">Mỗi 5 giây, Client tự động gửi request HTTP GET ngầm tới REST API. Máy chủ phản hồi danh sách phòng chờ mới nhất dưới dạng JSON.</p>
                                 </div>
                                 <div class="bg-slate-50 border border-slate-200/40 p-3 rounded-2xl space-y-1.5">
                                     <div class="text-xs font-bold text-slate-900 flex items-center gap-1.5">
                                         <span
                                             class="h-5 w-5 rounded-full bg-amber-600 text-white text-[10px] flex items-center justify-center font-mono">4</span>
-                                        UI cập nhật Tức thời
+                                        Đồng bộ UI mượt mà
                                     </div>
-                                    <p class="text-[11px] text-slate-500 font-medium">Web sảnh chờ (NextJS) và Mobile
-                                        App (Expo) đang subscribe kênh này lập tức nhận dữ liệu, cập nhật lại màn hình
-                                        hiển thị tức khắc.</p>
+                                    <p class="text-[11px] text-slate-500 font-medium">TanStack Query tự động đối chiếu dữ liệu mới. Nếu phát hiện thay đổi, giao diện phòng chờ trên sảnh và trên điện thoại bệnh nhân sẽ cập nhật tức thì.</p>
                                 </div>
                             </div>
                             <div
                                 class="bg-amber-50/40 border border-amber-100 p-3.5 rounded-2xl text-[11px] text-amber-950 flex flex-col gap-1 font-sans">
                                 <strong>Hậu trường Kỹ thuật (Technical Behind-the-Scenes):</strong>
-                                <span>• Sử dụng kiến trúc hướng sự kiện (Event-Driven) giúp module hóa mã nguồn.</span>
-                                <span>• Client Next.js và Mobile sử dụng thư viện STOMP kết nối an toàn, lắng nghe cổng
-                                    truyền dữ liệu bất đồng bộ.</span>
+                                <span>• Thay vì duy trì kết nối Socket tốn tài nguyên (Stateful), Short Polling bằng TanStack Query mang lại sự đơn giản, độ ổn định cực cao và khả năng phục hồi lỗi tự động cực tốt.</span>
+                                <span>• Tận dụng cơ chế Smart Caching và Stale-Time của TanStack Query để tránh re-render thừa, tối ưu hóa băng thông truyền tải.</span>
                             </div>
                         </div>
 
@@ -2256,16 +2242,11 @@
                     <div
                         class="bg-white border border-slate-200 rounded-3xl p-6 shadow-premium space-y-3 hover:border-cyan-500/50 transition duration-300">
                         <div class="h-10 w-10 rounded-xl bg-cyan-50 text-cyan-600 flex items-center justify-center">
-                            <i data-lucide="radio" class="h-5 w-5"></i>
+                            <i data-lucide="refresh-cw" class="h-5 w-5"></i>
                         </div>
-                        <h3 class="font-heading font-bold text-slate-900 text-lg">Phòng chờ thời gian thực kết nối
-                            Socket & Security</h3>
+                        <h3 class="font-heading font-bold text-slate-900 text-lg">Đồng bộ phòng chờ tự động bằng TanStack Query Polling</h3>
                         <p class="text-slate-600 text-xs leading-relaxed">
-                            Màn hình phòng chờ tại phòng khám tự động cập nhật danh sách bệnh nhân và số thứ tự khám
-                            thời gian thực bằng giao thức STOMP trên nền tảng WebSocket (có SockJS fallback). Để tránh
-                            việc kết nối lậu gây rò rỉ dữ liệu y khoa, hệ thống tích hợp bộ lọc bảo mật
-                            `JwtChannelInterceptor` ngay trên kênh truyền tin Inbound Channel để xác thực mã khóa JWT
-                            trước khi cho phép bắt tay kết nối.
+                            Màn hình phòng chờ tại sảnh tiếp đón (Web) và điện thoại bệnh nhân (Mobile) tự động đồng bộ danh sách và số thứ tự khám ngầm thông qua cơ chế Short Polling bằng TanStack Query (React Query) với chu kỳ 5 giây (refetchInterval: 5000). Cơ chế này đảm bảo tính cập nhật liên tục mà không cần duy trì kết nối Socket phức tạp tốn tài nguyên server, đồng thời tận dụng bộ nhớ Cache Client để tránh render thừa, tối ưu hóa tối đa hiệu năng hệ thống.
                         </p>
                     </div>
 
@@ -2638,12 +2619,183 @@
                                 vụ Y khoa</span>
                         </div>
                         <div
-                            class="bg-cyan-950/5 border border-cyan-100 rounded-xl p-4 text-xs md:text-sm text-slate-700 leading-relaxed italic">
+                            class="bg-cyan-950/5 border border-cyan-100 rounded-xl p-4 text-xs md:text-sm text-slate-800 font-medium leading-relaxed italic">
                             "Dạ, nếu bệnh nhân không đến khám theo đúng hẹn, lễ tân sẽ cập nhật trạng thái lịch hẹn
                             thành NO_SHOW. Hệ thống đồng thời tự động ghi nhận một bản ghi vào bảng no_show_log gắn với
                             bệnh nhân đó. Việc lưu vết này giúp phòng khám thống kê được tỷ lệ tuân thủ lịch hẹn của
                             khách hàng, từ đó có các chính sách như hạn chế quyền tự đặt lịch trên App đối với những tài
                             khoản có tần suất bùng lịch quá cao (ví dụ quá 3 lần)."
+                        </div>
+                    </div>
+
+                    <!-- BUS-Q1 -->
+                    <div class="qa-item bg-white border border-slate-200 rounded-2xl p-5 shadow-premium space-y-3 transition duration-150 hover:border-cyan-500/50"
+                        data-category="business">
+                        <div class="flex items-start justify-between gap-4">
+                            <div class="flex gap-3">
+                                <span
+                                    class="text-xs font-bold text-cyan-600 bg-cyan-50 border border-cyan-100 px-2 py-1 rounded h-6 flex items-center justify-center shrink-0">BUS-Q1</span>
+                                <h3 class="font-heading font-bold text-slate-900 text-sm md:text-base">Dưới góc độ kinh doanh và vận hành phòng khám, dự án NovaDental của em có những điểm khác biệt và lợi thế cạnh tranh gì nổi bật so với các giải pháp quản lý phòng khám răng hàm mặt hiện có trên thị trường?</h3>
+                            </div>
+                            <span
+                                class="text-[10px] font-bold text-slate-400 uppercase tracking-wider bg-slate-50 border border-slate-200 px-2 py-1 rounded shrink-0">Đổi mới & Kinh doanh</span>
+                        </div>
+                        <div
+                            class="bg-cyan-950/5 border border-cyan-100 rounded-xl p-4 text-xs md:text-sm text-slate-800 font-medium leading-relaxed italic">
+                            "Dạ thưa thầy cô, so với các phần mềm quản lý phòng khám truyền thống trên thị trường vốn chỉ tập trung vào nghiệp vụ quản lý nội bộ tại quầy (Desktop App hoặc Web nội bộ), NovaDental mang lại sự đột phá và giá trị kinh doanh vượt trội qua 3 điểm cốt lõi:<br><br>
+                            <strong>1. Trải nghiệm Omni-channel khép kín cho Khách hàng:</strong> Hệ thống kết nối liền mạch từ Web (quản trị, bác sĩ, lễ tân) đến Mobile App (dành cho bệnh nhân tự đặt lịch, theo dõi phác đồ điều trị, hóa đơn, nhận thông báo đẩy Real-time). Điều này giúp phòng khám giảm thiểu hơn 40% tỷ lệ đặt lịch ảo, tăng mức độ trung thành của khách hàng nhờ sự chủ động trong việc theo dõi sức khỏe răng miệng của mình.<br><br>
+                            <strong>2. Tích hợp Công nghệ Đổi mới Sáng tạo (AI X-Ray Analysis):</strong> Đây là điểm nhấn công nghệ đặc thù. Việc cung cấp công cụ AI hỗ trợ bác sĩ phân tích phim chụp X-quang răng ngay trên phần mềm không chỉ tăng tốc độ chẩn đoán, giảm thiểu sai sót y khoa mà còn là một công cụ marketing đắc lực giúp phòng khám nâng cao độ uy tín, xây dựng thương hiệu phòng khám công nghệ số hiện đại trong mắt khách hàng.<br><br>
+                            <strong>3. Cơ chế kiểm soát thất thoát doanh thu và tối ưu hóa vận hành:</strong> Hệ thống tự động đồng bộ hóa từ Lượt khám (Visit) -> Kế hoạch điều trị (Treatment Plan) -> Hóa đơn (Invoice) -> Thanh toán (Payment) theo quy trình kiểm soát chéo nghiêm ngặt, đảm bảo không xảy ra tình trạng điều trị nhưng bỏ sót thanh toán, đồng thời cung cấp báo cáo doanh thu trực quan theo thời gian thực giúp chủ phòng khám đưa ra quyết định kinh doanh kịp thời."
+                        </div>
+                    </div>
+
+                    <!-- BUS-Q2 -->
+                    <div class="qa-item bg-white border border-slate-200 rounded-2xl p-5 shadow-premium space-y-3 transition duration-150 hover:border-cyan-500/50"
+                        data-category="business">
+                        <div class="flex items-start justify-between gap-4">
+                            <div class="flex gap-3">
+                                <span
+                                    class="text-xs font-bold text-cyan-600 bg-cyan-50 border border-cyan-100 px-2 py-1 rounded h-6 flex items-center justify-center shrink-0">BUS-Q2</span>
+                                <h3 class="font-heading font-bold text-slate-900 text-sm md:text-base">Dự án của em có yếu tố "Đổi mới sáng tạo" (Innovation) nào nổi bật để giải quyết các bài toán nhức nhối (Pain Points) của ngành nha khoa hiện nay?</h3>
+                            </div>
+                            <span
+                                class="text-[10px] font-bold text-slate-400 uppercase tracking-wider bg-slate-50 border border-slate-200 px-2 py-1 rounded shrink-0">Đổi mới & Kinh doanh</span>
+                        </div>
+                        <div
+                            class="bg-cyan-950/5 border border-cyan-100 rounded-xl p-4 text-xs md:text-sm text-slate-800 font-medium leading-relaxed italic">
+                            "Dạ thưa thầy cô, yếu tố đổi mới sáng tạo của NovaDental nằm ở việc chuyển đổi mô hình từ 'Quản lý thụ động' sang 'Tương tác chủ động' và 'Trợ lý thông minh':<br><br>
+                            <strong>1. Trợ lý chẩn đoán hình ảnh bằng AI:</strong> Ứng dụng mô hình học sâu để tự động khoanh vùng răng sâu, viêm tủy trên phim chụp X-quang. Yếu tố đổi mới ở đây không phải là thay thế bác sĩ, mà là đóng vai trò 'bên thứ ba khách quan' giúp bác sĩ thuyết phục bệnh nhân dễ dàng hơn dựa trên kết quả phân tích trực quan của máy tính, từ đó tăng tỷ lệ chuyển đổi chốt liệu trình điều trị lên cao hơn.<br><br>
+                            <strong>2. Hệ thống hàng đợi thông minh Real-time (Waiting Room Service):</strong> Ứng dụng WebSocket để tự động sắp xếp bệnh nhân vào các phòng khám trống theo thời gian thực dựa trên trạng thái check-in của lễ tân và tiến độ điều trị của bác sĩ. Điều này loại bỏ hoàn toàn tình trạng bệnh nhân phải chen lấn hay chờ đợi không rõ thời gian tại phòng khám, tối ưu hóa công suất hoạt động của từng ghế nha khoa.<br><br>
+                            <strong>3. Cơ chế đánh giá và phạt tự động đối với hành vi bùng hẹn (No-Show Control):</strong> Hệ thống tự động ghi nhận nhật ký <code>no_show_log</code> và khóa quyền tự đặt lịch trên App của bệnh nhân nếu bùng lịch quá 3 lần. Đây là giải pháp đổi mới thiết thực giải quyết triệt để bài toán lãng phí thời gian trống của bác sĩ và ghế máy - một trong những nguyên nhân gây lãng phí chi phí vận hành lớn nhất của các phòng khám nha khoa hiện nay."
+                        </div>
+                    </div>
+
+                    <!-- BUS-Q3 -->
+                    <div class="qa-item bg-white border border-slate-200 rounded-2xl p-5 shadow-premium space-y-3 transition duration-150 hover:border-cyan-500/50"
+                        data-category="business">
+                        <div class="flex items-start justify-between gap-4">
+                            <div class="flex gap-3">
+                                <span
+                                    class="text-xs font-bold text-cyan-600 bg-cyan-50 border border-cyan-100 px-2 py-1 rounded h-6 flex items-center justify-center shrink-0">BUS-Q3</span>
+                                <h3 class="font-heading font-bold text-slate-900 text-sm md:text-base">Nếu dự án này được đưa vào thương mại hóa thực tế, em sẽ đề xuất mô hình kinh doanh (Business Model) và lộ trình phát triển (Roadmap) như thế nào để đảm bảo tính khả thi tài chính?</h3>
+                            </div>
+                            <span
+                                class="text-[10px] font-bold text-slate-400 uppercase tracking-wider bg-slate-50 border border-slate-200 px-2 py-1 rounded shrink-0">Đổi mới & Kinh doanh</span>
+                        </div>
+                        <div
+                            class="bg-cyan-950/5 border border-cyan-100 rounded-xl p-4 text-xs md:text-sm text-slate-800 font-medium leading-relaxed italic">
+                            "Dạ thưa thầy cô, nếu đưa NovaDental vào thương mại hóa, em đề xuất mô hình kinh doanh linh hoạt kết hợp SaaS và Value-added Services:<br><br>
+                            <strong>1. Mô hình SaaS (Software as a Service):</strong> Cung cấp phần mềm dưới dạng thuê bao tháng/năm với các gói dịch vụ phân cấp dựa trên quy mô phòng khám (Gói Basic cho phòng khám đơn, Gói Premium cho chuỗi phòng khám với các tính năng quản lý chi nhánh, báo cáo hợp nhất).<br><br>
+                            <strong>2. Mô hình Pay-per-use cho tính năng AI:</strong> Phòng khám sẽ mua các gói lượt phân tích X-quang bằng AI (ví dụ: $10 cho 100 lượt phân tích), giúp giảm chi phí đầu tư ban đầu cho họ và tạo nguồn doanh thu lặp lại đều đặn cho dự án.<br><br>
+                            <strong>3. Lộ trình phát triển (Roadmap):</strong><br>
+                            - <em>Giai đoạn 1 (Thử nghiệm):</em> Triển khai miễn phí cho 3-5 phòng khám vừa và nhỏ để thu thập phản hồi, tối ưu hóa trải nghiệm người dùng và tinh chỉnh mô hình AI dựa trên dữ liệu thực tế.<br>
+                            - <em>Giai đoạn 2 (Thương mại hóa diện rộng):</em> Đẩy mạnh các tính năng Omni-channel (App đặt lịch cho bệnh nhân) làm mũi nhọn tiếp thị, giúp phòng khám thấy rõ giá trị thu hút khách hàng mới để họ sẵn sàng xuống tiền mua phần mềm.<br>
+                            - <em>Giai đoạn 3 (Hệ sinh thái):</em> Tích hợp sâu với các nhà cung cấp vật liệu nha khoa, labo làm răng sứ để biến NovaDental thành một nền tảng B2B kết nối toàn diện chuỗi cung ứng ngành nha khoa."
+                        </div>
+                    </div>
+
+                    <!-- BUS-Q4 -->
+                    <div class="qa-item bg-white border border-slate-200 rounded-2xl p-5 shadow-premium space-y-3 transition duration-150 hover:border-cyan-500/50"
+                        data-category="business">
+                        <div class="flex items-start justify-between gap-4">
+                            <div class="flex gap-3">
+                                <span
+                                    class="text-xs font-bold text-cyan-600 bg-cyan-50 border border-cyan-100 px-2 py-1 rounded h-6 flex items-center justify-center shrink-0">BUS-Q4</span>
+                                <h3 class="font-heading font-bold text-slate-900 text-sm md:text-base">Hệ thống của em thu thập và tận dụng dữ liệu lớn (Data-driven) để giúp phòng khám tối ưu hóa vận hành và marketing như thế nào? Đây có phải là một điểm đổi mới so với cách làm cũ?</h3>
+                            </div>
+                            <span
+                                class="text-[10px] font-bold text-slate-400 uppercase tracking-wider bg-slate-50 border border-slate-200 px-2 py-1 rounded shrink-0">Đổi mới & Kinh doanh</span>
+                        </div>
+                        <div
+                            class="bg-cyan-950/5 border border-cyan-100 rounded-xl p-4 text-xs md:text-sm text-slate-800 font-medium leading-relaxed italic">
+                            "Dạ thưa thầy cô, đây là một điểm đổi mới cốt lõi giúp phòng khám chuyển dịch sang mô hình kinh doanh dựa trên dữ liệu (Data-driven):<br><br>
+                            <strong>1. Dự báo dòng tiền và lập kế hoạch vật tư:</strong> Thông qua lịch sử điều trị và các kế hoạch điều trị dài hạn (<code>treatment_plan</code>), hệ thống có thể thống kê được xu hướng sử dụng các loại dịch vụ răng miệng (ví dụ răng sứ, niềng răng, cấy implant) theo mùa. Từ đó giúp phòng khám dự trù vật tư tiêu hao chính xác, tránh tồn kho quá mức hoặc thiếu hụt vật tư trong các đợt cao điểm.<br><br>
+                            <strong>2. Cơ chế Remarketing tự động dựa trên bệnh án:</strong> Hệ thống có khả năng phân tích thời gian hoàn thành lượt khám của bệnh nhân. Ví dụ, nếu một bệnh nhân đã cạo vôi răng cách đây 6 tháng, hoặc có một kế hoạch điều trị răng khôn chưa hoàn tất, hệ thống sẽ tự động phát hiện và gửi thông báo nhắc nhở tái khám thông minh thông qua Mobile App, giúp tăng tỷ lệ quay lại của khách hàng mà không tốn chi phí telesale hay chạy quảng cáo mới.<br><br>
+                            <strong>3. Thống kê hiệu suất bác sĩ và nhân viên:</strong> Hệ thống đo lường thời gian xử lý ca bệnh của từng bác sĩ, tỷ lệ hài lòng của bệnh nhân và số lượng ca hoàn thành, giúp chủ phòng khám có cơ sở dữ liệu khách quan để xây dựng chính sách thưởng, tối ưu hóa phân bổ ca trực phù hợp."
+                        </div>
+                    </div>
+
+                    <!-- BUS-Q5 -->
+                    <div class="qa-item bg-white border border-slate-200 rounded-2xl p-5 shadow-premium space-y-3 transition duration-150 hover:border-cyan-500/50"
+                        data-category="business">
+                        <div class="flex items-start justify-between gap-4">
+                            <div class="flex gap-3">
+                                <span
+                                    class="text-xs font-bold text-cyan-600 bg-cyan-50 border border-cyan-100 px-2 py-1 rounded h-6 flex items-center justify-center shrink-0">BUS-Q5</span>
+                                <h3 class="font-heading font-bold text-slate-900 text-sm md:text-base">Trong kỷ nguyên y tế số, việc bảo vệ dữ liệu nhạy cảm của bệnh nhân (bệnh án y khoa) là cực kỳ quan trọng. Dự án của em có cơ chế bảo mật và phân quyền đổi mới nào để bảo vệ thông tin này trước các truy cập trái phép từ chính nhân viên trong phòng khám?</h3>
+                            </div>
+                            <span
+                                class="text-[10px] font-bold text-slate-400 uppercase tracking-wider bg-slate-50 border border-slate-200 px-2 py-1 rounded shrink-0">Đổi mới & Kinh doanh</span>
+                        </div>
+                        <div
+                            class="bg-cyan-950/5 border border-cyan-100 rounded-xl p-4 text-xs md:text-sm text-slate-800 font-medium leading-relaxed italic">
+                            "Dạ thưa thầy cô, bảo mật bệnh án là ưu tiên hàng đầu trong y tế số. Dự án của em áp dụng cơ chế phân quyền hạt nhân chi tiết (Fine-grained Authorization) kết hợp mã hóa để giải quyết triệt để bài toán này:<br><br>
+                            <strong>1. Phân quyền theo phạm vi dữ liệu (Data Scope Authorization):</strong> Không phải nhân viên nào cũng có quyền xem toàn bộ bệnh án. Lễ tân chỉ được quyền tiếp cận thông tin hành chính (họ tên, số điện thoại, lịch hẹn) và hóa đơn thanh toán mà không được xem bệnh án y khoa hay kế hoạch điều trị chi tiết của bác sĩ. Ngược lại, bác sĩ chỉ có quyền xem và chỉnh sửa bệnh án của những bệnh nhân thuộc ca điều trị của mình.<br><br>
+                            <strong>2. Kiểm vết truy cập (Access Logs / Audit Trail):</strong> Hệ thống ghi nhận nhật ký hoạt động chi tiết mỗi khi có tài khoản thực hiện hành vi truy xuất hoặc chỉnh sửa bệnh án của khách hàng (ai xem, xem lúc nào, xem những gì). Điều này ngăn ngừa tình trạng nhân viên tự ý đọc trộm thông tin của khách hàng VIP hoặc tuồn thông tin bệnh án ra bên ngoài.<br><br>
+                            <strong>3. Mã hóa và truyền tải an toàn:</strong> Toàn bộ dữ liệu truyền tải giữa Client và Server đều thông qua giao thức HTTPS được mã hóa. Các dữ liệu nhạy cảm như mật khẩu được băm một chiều bằng thuật toán mã hóa mạnh BCrypt trước khi lưu trữ dưới database."
+                        </div>
+                    </div>
+
+                    <!-- BUS-Q6 -->
+                    <div class="qa-item bg-white border border-slate-200 rounded-2xl p-5 shadow-premium space-y-3 transition duration-150 hover:border-cyan-500/50"
+                        data-category="business">
+                        <div class="flex items-start justify-between gap-4">
+                            <div class="flex gap-3">
+                                <span
+                                    class="text-xs font-bold text-cyan-600 bg-cyan-50 border border-cyan-100 px-2 py-1 rounded h-6 flex items-center justify-center shrink-0">BUS-Q6</span>
+                                <h3 class="font-heading font-bold text-slate-900 text-sm md:text-base">Ứng dụng di động Expo Mobile dành cho bệnh nhân đóng vai trò gì trong việc chuyển đổi số trải nghiệm khách hàng? Những tính năng nào trên App được coi là giải pháp đổi mới so với việc tương tác truyền thống?</h3>
+                            </div>
+                            <span
+                                class="text-[10px] font-bold text-slate-400 uppercase tracking-wider bg-slate-50 border border-slate-200 px-2 py-1 rounded shrink-0">Đổi mới & Kinh doanh</span>
+                        </div>
+                        <div
+                            class="bg-cyan-950/5 border border-cyan-100 rounded-xl p-4 text-xs md:text-sm text-slate-800 font-medium leading-relaxed italic">
+                            "Dạ thưa thầy cô, Mobile App của bệnh nhân là cầu nối trực tiếp giúp thay đổi hoàn toàn cách tương tác giữa khách hàng và phòng khám, mang lại sự đổi mới vượt trội qua các tính năng:<br><br>
+                            <strong>1. Sổ tay bệnh án điện tử cá nhân:</strong> Bệnh nhân có thể xem toàn bộ lịch sử khám (<code>visits</code>), phác đồ điều trị (<code>treatment_plans</code>) và hình ảnh chụp răng của mình ngay trên điện thoại. Thay vì giữ đống sổ khám bệnh và phim chụp bằng giấy dễ thất lạc, bệnh nhân giờ đây nắm giữ toàn bộ lịch sử y khoa của mình chỉ bằng vài lần chạm.<br><br>
+                            <strong>2. Minh bạch hóa chi phí điều trị:</strong> Bệnh nhân có thể xem chi tiết từng hóa đơn, lịch sử thanh toán và các khoản phí phát sinh của từng buổi điều trị. Sự minh bạch này giúp xây dựng lòng tin tuyệt đối giữa khách hàng và phòng khám, tránh các tranh chấp về chi phí sau này.<br><br>
+                            <strong>3. Nhận diện và thông báo chủ động:</strong> Tích hợp dịch vụ Push Notification thời gian thực giúp nhắc nhở lịch hẹn trước 1 ngày và trước 2 tiếng, hướng dẫn bệnh nhân chuẩn bị trước khi đến khám. Đồng thời gửi thông điệp chăm sóc sau điều trị (ví dụ hướng dẫn vệ sinh răng miệng sau khi nhổ răng khôn), tạo ra trải nghiệm chăm sóc y tế vô cùng cá nhân hóa và chuyên nghiệp."
+                        </div>
+                    </div>
+
+                    <!-- BUS-Q7 -->
+                    <div class="qa-item bg-white border border-slate-200 rounded-2xl p-5 shadow-premium space-y-3 transition duration-150 hover:border-cyan-500/50"
+                        data-category="business">
+                        <div class="flex items-start justify-between gap-4">
+                            <div class="flex gap-3">
+                                <span
+                                    class="text-xs font-bold text-cyan-600 bg-cyan-50 border border-cyan-100 px-2 py-1 rounded h-6 flex items-center justify-center shrink-0">BUS-Q7</span>
+                                <h3 class="font-heading font-bold text-slate-900 text-sm md:text-base">Cơ chế xếp hàng tự động (Waiting Room Service) sử dụng TanStack Query Polling trong hệ thống của em giải quyết bài toán vận hành thực tế tại phòng khám như thế nào? Đây có phải là giải pháp đổi mới sáng tạo không?</h3>
+                            </div>
+                            <span
+                                class="text-[10px] font-bold text-slate-400 uppercase tracking-wider bg-slate-50 border border-slate-200 px-2 py-1 rounded shrink-0">Đổi mới & Kinh doanh</span>
+                        </div>
+                        <div
+                            class="bg-cyan-950/5 border border-cyan-100 rounded-xl p-4 text-xs md:text-sm text-slate-800 font-medium leading-relaxed italic">
+                            "Dạ thưa thầy cô, cơ chế đồng bộ danh sách hàng chờ tự động sử dụng TanStack Query Polling là một giải pháp thiết thực, có tính đổi mới sáng tạo cao nhằm giải quyết trực tiếp bài toán quá tải tại sảnh chờ của phòng khám nha khoa:<br><br>
+                            <strong>1. Tự động hóa hoàn toàn quy trình điều phối bằng Short Polling:</strong> Thay vì bắt nhân viên y tế phải tải lại trang thủ công, hoặc duy trì một đường kết nối WebSocket liên tục (Stateful Connection) cực kỳ tốn tài nguyên máy chủ và dễ bị ngắt trên thiết bị di động, hệ thống sử dụng cơ chế Short Polling ngầm thông qua hook <code>useQuery</code> của TanStack Query với chu kỳ 5 giây (<code>refetchInterval: 5000</code>). Ngay khi lễ tân bấm 'Check-in' hoặc bác sĩ bấm gọi khám, danh sách hàng đợi trên màn hình sảnh chờ và trên điện thoại bệnh nhân sẽ tự động đồng bộ mượt mà.<br><br>
+                            <strong>2. Tối ưu hóa năng suất hoạt động và ghế máy nha khoa:</strong> Bác sĩ chỉ cần nhìn bảng điều khiển tự động cập nhật là biết bệnh nhân tiếp theo đã sẵn sàng hay chưa để bấm gọi vào phòng điều trị (<code>IN_PROGRESS</code>). Hệ thống giúp điều phối nhịp nhàng, tối ưu hóa công suất hoạt động của từng phòng khám và ghế điều trị lâm sàng.<br><br>
+                            <strong>3. Nâng cao trải nghiệm tâm lý và giảm căng thẳng cho khách hàng:</strong> Tránh việc bệnh nhân phải xếp hàng hoặc chen lấn vô định. Họ có thể theo dõi trực quan số thứ tự chờ của mình đang dịch chuyển dần ngay trên màn hình sảnh hoặc ứng dụng di động cá nhân, tạo ra một trải nghiệm chăm sóc y tế chuyên nghiệp và minh bạch."
+                        </div>
+                    </div>
+
+                    <!-- BUS-Q8 -->
+                    <div class="qa-item bg-white border border-slate-200 rounded-2xl p-5 shadow-premium space-y-3 transition duration-150 hover:border-cyan-500/50"
+                        data-category="business">
+                        <div class="flex items-start justify-between gap-4">
+                            <div class="flex gap-3">
+                                <span
+                                    class="text-xs font-bold text-cyan-600 bg-cyan-50 border border-cyan-100 px-2 py-1 rounded h-6 flex items-center justify-center shrink-0">BUS-Q8</span>
+                                <h3 class="font-heading font-bold text-slate-900 text-sm md:text-base">Việc tích hợp cổng thanh toán trực tuyến trong đồ án của em mang lại giá trị gia tăng gì cho phòng khám dưới góc nhìn tài chính và vận hành?</h3>
+                            </div>
+                            <span
+                                class="text-[10px] font-bold text-slate-400 uppercase tracking-wider bg-slate-50 border border-slate-200 px-2 py-1 rounded shrink-0">Đổi mới & Kinh doanh</span>
+                        </div>
+                        <div
+                            class="bg-cyan-950/5 border border-cyan-100 rounded-xl p-4 text-xs md:text-sm text-slate-800 font-medium leading-relaxed italic">
+                            "Dạ thưa thầy cô, việc tích hợp thanh toán trực tuyến là bước đi đổi mới mang tính chiến lược giúp phòng khám số hóa hoàn toàn dòng tiền:<br><br>
+                            <strong>1. Rút ngắn quy trình thanh toán:</strong> Bệnh nhân sau khi điều trị xong có thể quét mã QR động (chứa sẵn mã hóa đơn và số tiền cần thanh toán) để chuyển khoản trực tiếp, hoặc thanh toán qua cổng trực tuyến ngay trên App di động. Điều này giúp giảm tải hơn 50% thời gian xếp hàng chờ thanh toán tại quầy thu ngân, giải phóng nhanh không gian phòng chờ.<br><br>
+                            <strong>2. Hạn chế rủi ro thất thoát tiền mặt:</strong> Khi thanh toán qua chuyển khoản trực tuyến, tiền sẽ đi thẳng vào tài khoản ngân hàng của phòng khám với nội dung giao dịch được đối soát tự động nhờ API Webhook. Việc này loại bỏ hoàn toàn các sai sót do kiểm đếm tiền mặt, tiền giả, hoặc sự gian lận của nhân viên thu ngân trong quá trình thu tiền trực tiếp.<br><br>
+                            <strong>3. Hỗ trợ quản trị dòng tiền từ xa:</strong> Chủ phòng khám có thể theo dõi chính xác doanh thu thực tế phát sinh theo từng phút ngay trên Dashboard quản trị ở bất kỳ đâu, không cần phải đợi đến cuối ngày để đối soát sổ sách thủ công như trước đây."
                         </div>
                     </div>
 
